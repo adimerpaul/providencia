@@ -1,21 +1,57 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header class="bg-white text-black" bordered >
       <q-toolbar>
+<!--        keyboard_double_arrow_left-->
         <q-btn
-          flat
           dense
-          round
-          icon="menu"
+          rounded
+          color="primary"
+          :icon="leftDrawerOpen ? 'keyboard_double_arrow_left' : 'keyboard_double_arrow_right'"
           aria-label="Menu"
+          size="10px"
           @click="toggleLeftDrawer"
+          unelevated
         />
 
         <q-toolbar-title>
-          Quasar App
+<!--          Quasar App-->
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>
+<!--          Quasar v{{ $q.version }}-->
+          <q-btn-dropdown flat unelevated  no-caps dropdownIcon="expand_more">
+            <template v-slot:label>
+              <q-avatar rounded>
+                <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" />
+              </q-avatar>
+              <div class="text-left" style="line-height: 1">
+                <div>Quasar</div>
+                <div>Awesome</div>
+              </div>
+            </template>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <q-item-label>Docs</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <q-item-label>GitHub</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <q-item-label>Forum</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <q-item-label>Discord</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-btn-dropdown>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -39,7 +75,7 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="bg-grey-3">
       <router-view />
     </q-page-container>
   </q-layout>

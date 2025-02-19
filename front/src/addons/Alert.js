@@ -23,13 +23,19 @@ export class Alert{
   static error(message) {
     Notify.create({
       progress: true,
-      color: 'negative',
+      color: 'white',
+      textColor: 'black',
       position: 'top',
       message,
-      // icon: 'close',
       timeout: 1500,
-      actions: [{icon: 'close', color: 'white', size: 'sm'}]
-    })
+      icon: 'error',
+      iconColor: 'negative',
+      actions: [
+        { icon: 'close', color: 'black', round: true, size: 'xs' }
+      ],
+      progressClass: 'bg-negative',
+      classes: 'bg-white text-black text-bold left-red-border'
+    });
   }
   static dialog (title, message) {
     // return Dialog.create({
