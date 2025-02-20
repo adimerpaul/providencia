@@ -87,8 +87,15 @@ onMounted(() => {
 function login() {
   loading.value = true
   proxy.$axios.post('/login', {username: username.value, password: password.value})
-    .then(response => {
-      proxy.$alert.success('Bienvenido a Providencia', response.data.message)
+    .then(res => {
+      const user = res.data.user
+      const token = res.data.token
+      proxy.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      proxy.$store.isLogged = true
+      proxy.$store.user = user
+      localStorage.setItem('tokenProvidencia', token)
+      proxy.$alert.success('Bienvenido ' + user.name)
+      proxy.$router.push('/')
     })
     .catch(error => {
       proxy.$alert.error('Error al iniciar sesión', 'Error')

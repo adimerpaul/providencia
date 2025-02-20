@@ -23,31 +23,21 @@
           <q-btn-dropdown flat unelevated  no-caps dropdownIcon="expand_more">
             <template v-slot:label>
               <q-avatar rounded>
-                <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" />
+                <q-img :src="$url+ '../images/' + $store.user.avatar" v-if="$store.user.avatar" />
               </q-avatar>
-              <div class="text-left" style="line-height: 1">
-                <div>Quasar</div>
-                <div>Awesome</div>
+              <div class="text-center" style="line-height: 1">
+                <div style="width: 100px; white-space: normal; overflow-wrap: break-word;">
+                  {{ $store.user.name }}
+                </div>
+<!--                <pre>{{$store.user}}</pre>-->
               </div>
             </template>
-            <q-item clickable v-ripple>
-              <q-item-section>
-                <q-item-label>Docs</q-item-label>
+            <q-item clickable v-ripple @click="logout" v-close-popup>
+              <q-item-section avatar>
+                <q-icon name="logout" />
               </q-item-section>
-            </q-item>
-            <q-item clickable v-ripple>
               <q-item-section>
-                <q-item-label>GitHub</q-item-label>
-              </q-item-section>
-            </q-item>
-            <q-item clickable v-ripple>
-              <q-item-section>
-                <q-item-label>Forum</q-item-label>
-              </q-item-section>
-            </q-item>
-            <q-item clickable v-ripple>
-              <q-item-section>
-                <q-item-label>Discord</q-item-label>
+                <q-item-label>Salir</q-item-label>
               </q-item-section>
             </q-item>
           </q-btn-dropdown>
@@ -57,21 +47,52 @@
 
     <q-drawer
       v-model="leftDrawerOpen"
-      show-if-above
       bordered
+      show-if-above
+      :width="200"
+      :breakpoint="500"
+      class="bg-primary text-white"
     >
       <q-list>
         <q-item-label
           header
+          class="text-center"
         >
-          Essential Links
+          <q-img src="logo.png" width="100px" />
         </q-item-label>
 
-        <EssentialLink
-          v-for="link in linksList"
-          :key="link.title"
-          v-bind="link"
-        />
+<!--        <EssentialLink-->
+<!--          v-for="link in linksList"-->
+<!--          :key="link.title"-->
+<!--          v-bind="link"-->
+<!--        />-->
+        <template v-for="link in linksList" :key="link.title">
+<!--          v-if="link.can === 'Todos' || $store.permissions.some(permission => permission.name === link.can)"-->
+          <q-item  clickable :to="link.link" exact
+                   class="text-black"
+                   active-class="menu"
+                   dense
+                   v-close-popup
+          >
+            <q-item-section avatar>
+              <q-icon :name="$route.path === link.link ? 'o_' + link.icon : link.icon"
+                      :class="$route.path === link.link ? 'text-black' : ''"/>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label :class="$route.path === link.link ? 'text-black text-bold' : ''">
+                {{ link.title }}
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+        </template>
+        <q-item clickable class="text-black" @click="logout" v-close-popup>
+          <q-item-section avatar>
+            <q-icon name="logout" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Salir</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
@@ -82,52 +103,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
-
+import {getCurrentInstance, ref} from 'vue'
+// import EssentialLink from 'components/EssentialLink.vue'
+const {proxy} = getCurrentInstance()
 const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
+  { title: 'Principal', icon: 'home', link: '/', can: 'Todos' },
+  { title: 'Usuarios', icon: 'people', link: '/usuarios', can: 'Usuarios' },
+  // { title: 'Fraternos', icon: 'people', link: '/fraternos', can: 'Fraternos' },
+  { title: 'Pagos', icon: 'payment', link: '/pagos', can: 'Pagos' },
 ]
 
 const leftDrawerOpen = ref(false)
@@ -135,4 +118,26 @@ const leftDrawerOpen = ref(false)
 function toggleLeftDrawer () {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
+function logout() {
+  proxy.$alert.dialog('¿Desea salir del sistema?')
+    .onOk(() => {
+      proxy.$store.isLogged = false
+      proxy.$store.user = {}
+      localStorage.removeItem('tokenProvidencia')
+      proxy.$router.push('/login')
+    })
+  // proxy.$store.isLogged = false
+  // proxy.$store.user = {}
+  // localStorage.removeItem('tokenProvidencia')
+  // proxy.$router.push('/login')
+}
 </script>
+<style>
+.menu{
+  background-color: #fff;
+  color: #000 !important;
+  border-radius: 10px;
+  margin: 5px;
+  padding: 5px
+}
+</style>
