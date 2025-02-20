@@ -23,8 +23,16 @@ class DatabaseSeeder extends Seeder
             'name' => 'Adimer Paul Chambi Ajata',
             'username' => 'admin',
             'avatar' => 'default.png',
-            'email' => 'admin@gmail.com',
+//            'email' => 'admin@gmail.com',
             'password' => bcrypt('admin123Admin'),
+            'role' => 'Admin',
+        ]);
+        $user = User::create([
+            'name' => 'Roger Guillermo Arias Rodriguez',
+            'username' => 'roger',
+            'avatar' => 'default.png',
+//            'email' => 'admin@gmail.com',
+            'password' => bcrypt('roger123Roger'),
         ]);
     }
 }

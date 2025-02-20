@@ -3,7 +3,7 @@
     <q-table :rows="users" :columns="columns" dense wrap-cells flat bordered :rows-per-page-options="[0]"
              title="Usuarios" :filter="filter">
       <template v-slot:top-right>
-        <q-btn color="primary" label="Nuevo" @click="userNew" outline no-caps  icon="add_circle_outline" :loading="loading" />
+        <q-btn color="positive" label="Nuevo" @click="userNew"  no-caps  icon="add_circle_outline" :loading="loading" />
         <q-input v-model="filter" label="Buscar" dense outlined >
           <template v-slot:append>
             <q-icon name="search" />
@@ -38,14 +38,14 @@
                   <q-item-label>Cambiar contraseña</q-item-label>
                 </q-item-section>
               </q-item>
-              <q-item clickable @click="permisosShow(props.row)" v-close-popup>
-                <q-item-section avatar>
-                  <q-icon name="edit" />
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Permisos</q-item-label>
-                </q-item-section>
-              </q-item>
+<!--              <q-item clickable @click="permisosShow(props.row)" v-close-popup>-->
+<!--                <q-item-section avatar>-->
+<!--                  <q-icon name="edit" />-->
+<!--                </q-item-section>-->
+<!--                <q-item-section>-->
+<!--                  <q-item-label>Permisos</q-item-label>-->
+<!--                </q-item-section>-->
+<!--              </q-item>-->
             </q-list>
           </q-btn-dropdown>
         </q-td>
@@ -58,6 +58,21 @@
         </q-td>
       </template>
     </q-table>
+<!--    <pre>{{ users }}</pre>-->
+<!--    [-->
+<!--    {-->
+<!--    "id": 2,-->
+<!--    "name": "Roger Guillermo Arias Rodriguez",-->
+<!--    "avatar": "default.png",-->
+<!--    "username": "roger",-->
+<!--    "email": null,-->
+<!--    "role": "Vendedor",-->
+<!--    "email_verified_at": null,-->
+<!--    "deleted_at": null,-->
+<!--    "created_at": "2025-02-20T08:48:15.000000Z",-->
+<!--    "updated_at": "2025-02-20T08:48:15.000000Z"-->
+<!--    }-->
+<!--    ]-->
     <q-dialog v-model="userDialog" persistent>
       <q-card>
         <q-card-section class="q-pb-none row items-center">
@@ -71,12 +86,13 @@
           <q-form @submit="user.id ? userPut() : userPost()">
             <q-input v-model="user.name" label="Nombre" dense outlined :rules="[val => !!val || 'Campo requerido']" />
             <q-input v-model="user.username" label="Usuario" dense outlined :rules="[val => !!val || 'Campo requerido']" />
-            <q-input v-model="user.email" label="Email" dense outlined hint="" />
+<!--            <q-input v-model="user.email" label="Email" dense outlined hint="" />-->
             <q-input v-model="user.password" label="Contraseña" dense outlined :rules="[val => !!val || 'Campo requerido']" v-if="!user.id" />
-            <q-input v-model="user.phone" label="Telefono" dense outlined hint="" />
-            <q-input v-model="user.codigo" label="Codigo" dense outlined hint="" />
-            <q-input v-model="user.gestion" label="Gestion" dense outlined hint="" />
-            <q-input v-model="user.bloque" label="Bloque" dense outlined hint="" />
+            <q-select v-model="user.role" label="Rol" dense outlined :options="roles" :rules="[val => !!val || 'Campo requerido']" />
+<!--            <q-input v-model="user.phone" label="Telefono" dense outlined hint="" />-->
+<!--            <q-input v-model="user.codigo" label="Codigo" dense outlined hint="" />-->
+<!--            <q-input v-model="user.gestion" label="Gestion" dense outlined hint="" />-->
+<!--            <q-input v-model="user.bloque" label="Bloque" dense outlined hint="" />-->
             <div class="text-right" >
               <q-btn color="negative" label="Cancelar" @click="userDialog = false" no-caps :loading="loading" />
               <q-btn color="primary" label="Guardar" type="submit" no-caps :loading="loading" class="q-ml-sm" />
@@ -127,13 +143,12 @@ export default {
       actionPeriodo: '',
       gestiones: [],
       filter: '',
-      roles: ['Doctor', 'Enfermera', 'Administrativo', 'Secretaria'],
+      roles: ['Admin', 'Vendedor'],
       columns: [
         { name: 'actions', label: 'Acciones', align: 'center' },
         { name: 'name', label: 'Nombre', align: 'left', field: 'name' },
         { name: 'username', label: 'Usuario', align: 'left', field: 'username' },
-        { name: 'codigo', label: 'Codigo', align: 'left', field: 'codigo' },
-        { name: 'phone', label: 'Telefono', align: 'left', field: 'phone' },
+        { name: 'role', label: 'Rol', align: 'left', field: 'role' },
         // { name: 'email', label: 'Email', align: 'left', field: 'email' }
       ],
       permissions: [],
@@ -172,7 +187,7 @@ export default {
         area_id: 1,
         username: '',
         cargo: '',
-        role: 'Area',
+        role: 'Vendedor',
       }
       this.actionPeriodo = 'Nuevo'
       this.userDialog = true

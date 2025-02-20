@@ -19,9 +19,23 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+//$table->id();
+//$table->string('name');
+//$table->string('avatar')->nullable()->default('default.png');
+//$table->string('username')->unique();
+//$table->string('email')->unique()->nullable();
+//$table->string('role')->default('Vendedor');
+//$table->timestamp('email_verified_at')->nullable();
+//$table->string('password');
+//$table->rememberToken();
+//$table->softDeletes();
+//$table->timestamps();
     protected $fillable = [
         'name',
+        'avatar',
+        'username',
         'email',
+        'role',
         'password',
     ];
 
@@ -46,5 +60,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    protected $appends = ['color'];
+
+    public function getColorAttribute(){
+        $roles = [
+            'Admin' => 'red',
+            'Vendedor' => 'green',
+        ];
+        return $roles[$this->role] ?? 'blue';
     }
 }
