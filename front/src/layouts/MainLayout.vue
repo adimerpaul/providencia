@@ -109,8 +109,12 @@ const {proxy} = getCurrentInstance()
 const linksList = [
   { title: 'Principal', icon: 'home', link: '/', can: 'Todos' },
   { title: 'Usuarios', icon: 'people', link: '/usuarios', can: 'Usuarios' },
-  // { title: 'Fraternos', icon: 'people', link: '/fraternos', can: 'Fraternos' },
-  { title: 'Reservas', icon: 'event', link: '/reservas', can: 'Reservas' },
+  { title: 'Productos', icon: 'inventory_2', link: '/productos', can: 'Productos' },
+  { title: 'Categorias', icon: 'category', link: '/categorias', can: 'Categorias' },
+  { title: 'Proveedores', icon: 'store', link: '/proveedores', can: 'Proveedores' },
+  { title: 'Clientes', icon: 'person', link: '/clientes', can: 'Clientes' },
+  { title: 'Ventas', icon: 'shopping_cart', link: '/ventas', can: 'Ventas' },
+  // { title: 'Compras', icon: 'shopping_bag', link: '/compras', can: 'Compras' },
 ]
 
 const leftDrawerOpen = ref(false)

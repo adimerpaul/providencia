@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,7 +21,7 @@ class DatabaseSeeder extends Seeder
 //            'email' => 'test@example.com',
 //        ]);
         $user = User::create([
-            'name' => 'Adimer Paul Chambi Ajata',
+            'name' => 'Chambi Ajata Adimer Paul ',
             'username' => 'admin',
             'avatar' => 'default.png',
 //            'email' => 'admin@gmail.com',
@@ -28,11 +29,13 @@ class DatabaseSeeder extends Seeder
             'role' => 'Admin',
         ]);
         $user = User::create([
-            'name' => 'Roger Guillermo Arias Rodriguez',
-            'username' => 'roger',
+            'name' => 'Chambi Ajhuacho Maribel',
+            'username' => 'maribel',
             'avatar' => 'default.png',
 //            'email' => 'admin@gmail.com',
-            'password' => bcrypt('roger123Roger'),
+            'password' => bcrypt('maribel123Maribel'),
         ]);
+        $sqlFile = file_get_contents(base_path('database/seeders/productos_202502251544.sql'));
+        DB::unprepared($sqlFile);
     }
 }
