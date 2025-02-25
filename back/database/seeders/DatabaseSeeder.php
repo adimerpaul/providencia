@@ -36,6 +36,8 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('maribel123Maribel'),
         ]);
         $sqlFile = file_get_contents(base_path('database/seeders/productos_202502251544.sql'));
+        $sqlClients = file_get_contents(base_path('database/seeders/clients_202502251933.sql'));
+        DB::unprepared($sqlClients);
         DB::unprepared($sqlFile);
     }
 }
